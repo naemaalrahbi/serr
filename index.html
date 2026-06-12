@@ -112,7 +112,7 @@
         };
 
         try {
-            const response = await fetch('http://localhost:3000/api/submit-evaluation', {
+            const response = await fetch('https://serr-h7s1.onrender.com/api/submit-evaluation', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData)
