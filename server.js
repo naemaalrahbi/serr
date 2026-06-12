@@ -62,7 +62,7 @@ app.post('/api/submit-evaluation', (req, res) => {
 
     res.json({
         success: true,
-        url: `http://localhost:${PORT}/api/evaluation/${evalId}`
+        url: `https://serr-h7s1.onrender.com/api/evaluation/${evalId}`
     });
 });
 
