@@ -10,7 +10,12 @@ app.use(express.json());
 
 // مصفوفة حفظ تقييمات المقاولين
 const contractorEvaluations = [];
+// كود لجعل السيرفر يعرض صفحة الاستمارة مباشرة عند فتح الرابط الرئيسي
+const path = require('path');
 
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
 app.post('/api/submit-evaluation', (req, res) => {
     const { 
         projectName, contractNumber, contractorName,
