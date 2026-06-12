@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ar" direction="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>نظام تقييم المقاولين الرقمي</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: #f4f6f9; direction: rtl; padding: 20px; }
+        .container { max-width: 650px; background: white; margin: 0 auto; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.08); }
+        h2, h3 { color: #333; border-bottom: 2px solid #0056b3; padding-bottom: 8px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input[type="text"], select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; background-color: #0056b3; color: white; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; font-weight: bold;}
+        button:hover { background-color: #004085; }
+        .result-box { display: none; margin-top: 20px; padding: 20px; background-color: #d4edda; border: 1px solid #c3e6cb; border-radius: 4px; text-align: center; }
+        a { color: #155724; font-weight: bold; word-break: break-all; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2 style="text-align: center;">بيانات تقييم المقاول لإصدار شهادة حسن تنفيذ</h2>
+    
+    <form id="evaluationForm">
+        <h3>أولاً: بيانات المشروع</h3>
+        <div class="form-group">
+            <label>اسم المشروع:</label>
+            <input type="text" id="projectName" required>
+        </div>
+        <div class="form-group">
+            <label>رقم العقد:</label>
+            <input type="text" id="contractNumber" required>
+        </div>
+        <div class="form-group">
+            <label>المقاول المنفذ:</label>
+            <input type="text" id="contractorName" required>
+        </div>
+
+        <h3>ثانياً: تقييم أداء المقاول (الدرجة من 1 إلى 5)</h3>
+        <p style="font-size: 13px; color: #666;">* ملاحظة: (5 تعني ممتاز جداً - 1 تعني ضعيف جداً)</p>
+        
+        <div class="form-group">
+            <label>1. الالتزام بالبرنامج الزمني:</label>
+            <select id="timeCommitment" required>
+                <option value="5">5 - ممتاز</option>
+                <option value="4">4 - جيد جداً</option>
+                <option value="3">3 - جيد</option>
+                <option value="2">2 - مقبول</option>
+                <option value="1">1 - ضعيف</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>2. جودة التنفيذ والأعمال المنجزة:</label>
+            <select id="qualityOfWork" required>
+                <option value="5">5</option><option value="4">4</option><option value="3">3</option><option value="2">2</option><option value="1">1</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>3. الالتزام بالمواصفات الفنية والمخططات:</label>
+            <select id="techSpecs" required>
+                <option value="5">5</option><option value="4">4</option><option value="3">3</option><option value="2">2</option><option value="1">1</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>4. الالتزام باشتراطات السلامة والصحة المهنية:</label>
+            <select id="safetyCommitment" required>
+                <option value="5">5</option><option value="4">4</option><option value="3">3</option><option value="2">2</option><option value="1">1</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>5. إدارة الموقع والتنسيق والاستجابة للملاحظات:</label>
+            <select id="siteManagement" required>
+                <option value="5">5</option><option value="4">4</option><option value="3">3</option><option value="2">2</option><option value="1">1</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>6. الالتزام الإداري والتعاقدي (التقارير والمستخلصات):</label>
+            <select id="adminCommitment" required>
+                <option value="5">5</option><option value="4">4</option><option value="3">3</option><option value="2">2</option><option value="1">1</option>
+            </select>
+        </div>
+
+        <button type="submit">إرسال التقييم واحتساب النسبة المئوية</button>
+    </form>
+
+    <div id="resultBox" class="result-box">
+        <h3>🎉 تم احتساب وحفظ التقييم بنجاح!</h3>
+        <p>اضغط على الرابط أدناه لعرض استمارة التقييم والنسبة المئوية الإجمالية والتوصية الصادرة ميكانيكياً:</p>
+        <p><a id="evaluationLink" href="#" target="_blank"></a></p>
+    </div>
+</div>
+
+<script>
+    document.getElementById('evaluationForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const formData = {
+            projectName: document.getElementById('projectName').value,
+            contractNumber: document.getElementById('contractNumber').value,
+            contractorName: document.getElementById('contractorName').value,
+            timeCommitment: document.getElementById('timeCommitment').value,
+            qualityOfWork: document.getElementById('qualityOfWork').value,
+            techSpecs: document.getElementById('techSpecs').value,
+            safetyCommitment: document.getElementById('safetyCommitment').value,
+            siteManagement: document.getElementById('siteManagement').value,
+            adminCommitment: document.getElementById('adminCommitment').value
+        };
+
+        try {
+            const response = await fetch('http://localhost:3000/api/submit-evaluation', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                document.getElementById('evaluationForm').style.display = 'none';
+                const resultBox = document.getElementById('resultBox');
+                const link = document.getElementById('evaluationLink');
+                link.href = result.url;
+                link.innerText = result.url;
+                resultBox.style.display = 'block';
+            }
+        } catch (error) {
+            alert('تأكد من تشغيل السيرفر أولاً!');
+        }
+    });
+</script>
+
+</body>
+</html>
