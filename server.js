@@ -30,7 +30,12 @@ app.post('/api/submit-evaluation', (req, res) => {
         Number(techSpecs), 
         Number(safetyCommitment), 
         Number(siteManagement), 
-        Number(adminCommitment)
+        Number(adminCommitment),
+        Number(aCommitment),
+        Number(bCommitment)
+
+
+        
     ];
 
     // حساب المجموع الكلي المستحق (الحد الأقصى هو 6 معايير × 5 درجات = 30)
@@ -88,7 +93,10 @@ app.get('/api/evaluation/:id', (req, res) => {
             <p><strong>اسم المشروع:</strong> ${ev.projectName || 'غير مدخل'}</p>
             <p><strong>رقم العقد:</strong> ${ev.contractNumber || 'غير مدخل'}</p>
             <p><strong>المقاول المنفذ:</strong> ${ev.contractorName || 'غير مدخل'}</p>
-            
+             <p><strong>المهندس المشرف:</strong> ${ev.contractorName || 'غير مدخل'}</p>
+             <p><strong>تاريخ بداية العمل:</strong> ${ev.contractorName || 'غير مدخل'}</p>
+             <p><strong>تاريخ تسليم المشروع:</strong> ${ev.contractorName || 'غير مدخل'}</p>
+
             <hr>
             <h3>ثانياً: الدرجات المستحقة (من 1 إلى 5)</h3>
             <ul>
@@ -98,6 +106,9 @@ app.get('/api/evaluation/:id', (req, res) => {
                 <li>الالتزام باشتراطات السلامة والصحة المهنية: <strong>${ev.scores.safetyCommitment} / 5</strong></li>
                 <li>إدارة الموقع والتنسيق: <strong>${ev.scores.siteManagement} / 5</strong></li>
                 <li>الالتزام الإداري والتعاقدي: <strong>${ev.scores.adminCommitment} / 5</strong></li>
+                 <li>كفاءه ادارة المشروع: <strong>${ev.scores.aCommitment} / 5</strong></li>
+                 <li>سرعة الاستجابه في فترة الضمان: <strong>${ev.scores.bCommitment} / 5</strong></li>
+
             </ul>
 
             <hr style="border-top: 2px dashed #0056b3;">
