@@ -16,12 +16,25 @@ const path = require('path');
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
+
+
 app.post('/api/submit-evaluation', (req, res) => {
-    const { 
-        projectName, contractNumber, contractorName,
-        timeCommitment, qualityOfWork, techSpecs, 
-        safetyCommitment, siteManagement, adminCommitment 
-    } = req.body;
+  const {
+    projectName,
+    contractNumber,
+    contractorName,
+    engineerName,
+    startDate,
+    deliveryDate,
+    timeCommitment,
+    qualityOfWork,
+    techSpecs,
+    safetyCommitment,
+    siteManagement,
+    adminCommitment,
+    aCommitment,
+    bCommitment
+} = req.body;
 
     // تحويل القيم إلى أرقام للتأكد من صحة الحسابات
     const scores = [
@@ -40,8 +53,7 @@ app.post('/api/submit-evaluation', (req, res) => {
 
     // حساب المجموع الكلي المستحق (الحد الأقصى هو 6 معايير × 5 درجات = 30)
     const totalScore = scores.reduce((sum, score) => sum + score, 0);
-    const maxPossibleScore = 30;
-    
+    const maxPossibleScore = 40;
     // حساب النسبة المئوية من 100%
     const finalPercentage = Math.round((totalScore / maxPossibleScore) * 100);
 
@@ -53,20 +65,29 @@ app.post('/api/submit-evaluation', (req, res) => {
     // معرف عشوائي للرابط
     const evalId = crypto.randomBytes(4).toString('hex');
 
-    const newEvaluation = {
-        id: evalId,
-        projectName,
-        contractNumber,
-        contractorName,
-        scores: {
-            timeCommitment, qualityOfWork, techSpecs, 
-            safetyCommitment, siteManagement, adminCommitment
-        },
-        totalScore,
-        finalPercentage,
-        recommendation,
-        date: new Date().toLocaleDateString('ar-EG')
-    };
+ const newEvaluation = {
+    id: evalId,
+    projectName,
+    contractNumber,
+    contractorName,
+    engineerName,
+    startDate,
+    deliveryDate,
+    scores: {
+        timeCommitment,
+        qualityOfWork,
+        techSpecs,
+        safetyCommitment,
+        siteManagement,
+        adminCommitment,
+        aCommitment,
+        bCommitment
+    },
+    totalScore,
+    finalPercentage,
+    recommendation,
+    date: new Date().toLocaleDateString('ar-EG')
+};
 
     contractorEvaluations.push(newEvaluation);
 
@@ -93,9 +114,9 @@ app.get('/api/evaluation/:id', (req, res) => {
             <p><strong>اسم المشروع:</strong> ${ev.projectName || 'غير مدخل'}</p>
             <p><strong>رقم العقد:</strong> ${ev.contractNumber || 'غير مدخل'}</p>
             <p><strong>المقاول المنفذ:</strong> ${ev.contractorName || 'غير مدخل'}</p>
-             <p><strong>المهندس المشرف:</strong> ${ev.contractorName || 'غير مدخل'}</p>
-             <p><strong>تاريخ بداية العمل:</strong> ${ev.contractorName || 'غير مدخل'}</p>
-             <p><strong>تاريخ تسليم المشروع:</strong> ${ev.contractorName || 'غير مدخل'}</p>
+<p><strong>المهندس المشرف:</strong> ${ev.engineerName || 'غير مدخل'}</p>
+<p><strong>تاريخ بداية العمل:</strong> ${ev.startDate || 'غير مدخل'}</p>
+<p><strong>تاريخ تسليم المشروع:</strong> ${ev.deliveryDate || 'غير مدخل'}</p>
 
             <hr>
             <h3>ثانياً: الدرجات المستحقة (من 1 إلى 5)</h3>
@@ -117,8 +138,8 @@ app.get('/api/evaluation/:id', (req, res) => {
                 <p style="font-size: 24px; color: #28a745; margin: 5px 0;">
                     النتيجة النهائية: <strong>${ev.finalPercentage}%</strong>
                 </p>
-                <p>إجمالي النقاط: ${ev.totalScore} من أصل 30 نقطة</p>
-            </div>
+<p>إجمالي النقاط: ${ev.totalScore} من أصل 40 نقطة</p>
+</div>
 
             <hr>
             <h3>رابعاً: التوصية النهائية</h3>
