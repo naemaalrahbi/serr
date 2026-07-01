@@ -84,6 +84,23 @@
                 <option value="5">5</option><option value="4">4</option><option value="3">3</option><option value="2">2</option><option value="1">1</option>
             </select>
         </div>
+        <div class="form-group">
+    <label>7. كفاءة إدارة المشروع:</label>
+    <select id="aCommitment" required>
+        <option value="5">5</option><option value="4">4</option>
+        <option value="3">3</option><option value="2">2</option>
+        <option value="1">1</option>
+    </select>
+</div>
+
+<div class="form-group">
+    <label>8. سرعة الاستجابة خلال الضمان:</label>
+    <select id="bCommitment" required>
+        <option value="5">5</option><option value="4">4</option>
+        <option value="3">3</option><option value="2">2</option>
+        <option value="1">1</option>
+    </select>
+</div>
 
         <button type="submit">إرسال التقييم واحتساب النسبة المئوية</button>
     </form>
@@ -108,7 +125,9 @@
             techSpecs: document.getElementById('techSpecs').value,
             safetyCommitment: document.getElementById('safetyCommitment').value,
             siteManagement: document.getElementById('siteManagement').value,
-            adminCommitment: document.getElementById('adminCommitment').value
+            adminCommitment: document.getElementById('adminCommitment').value,
+            aCommitment: document.getElementById('aCommitment').value,
+bCommitment: document.getElementById('bCommitment').value
         };
 
         try {
